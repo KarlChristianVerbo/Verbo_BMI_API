@@ -1,161 +1,125 @@
-# Student Management System - Frontend
+# BMI Calculator System
 
-A modern React-based frontend for managing student information with fields for Full Name, Course, ID Number, Department, and Current Units.
+A complete Body Mass Index (BMI) calculator system with database integration, built with Node.js, Express, and MySQL.
 
 ## Features
 
-- ✅ Add new students
-- ✅ View all students in a beautiful card layout
-- ✅ Edit existing student records
-- ✅ Delete students
-- ✅ Form validation
-- ✅ Responsive design
-- ✅ Modern UI with gradient backgrounds
-- ✅ Error handling and loading states
+- **User Information Collection**: Collect name, age, and gender before calculating BMI
+- **BMI Calculation**: Calculate BMI based on height and weight
+- **Automatic Category Classification**: Classifies as Underweight, Normal, Overweight, or Obese
+- **History Tracking**: View all past BMI calculations for each user
+- **Database Storage**: All BMI records are saved with user information
+- **Beautiful, Modern UI**: Clean and user-friendly interface
+- **RESTful API Endpoints**: Complete API for BMI operations
 
-## Prerequisites
+## Tech Stack
 
-- Node.js (v14 or higher)
-- npm or yarn
-- Backend API running (see Backend Connection section)
+- **Backend**: Node.js, Express.js
+- **Database**: MySQL
+- **Frontend**: HTML, CSS, JavaScript
 
 ## Installation
 
-1. Install dependencies:
+1. Clone the repository:
+```bash
+git clone https://github.com/KarlChristianVerbo/Verbo_API.git
+cd Verbo_API
+```
+
+2. Navigate to the backend folder:
+```bash
+cd backend
+```
+
+3. Install dependencies:
 ```bash
 npm install
 ```
 
-## Configuration
-
-Before running the application, configure your backend API URL:
-
-1. Create a `.env` file in the root directory:
-```env
-REACT_APP_API_URL=http://localhost:8000/api
+4. Configure database in `backend/database.js`:
+```javascript
+const dbConfig = {
+    host: "localhost",
+    user: "root",
+    password: "",  // Your MySQL password
+    database: "bmi_calculator"
+};
 ```
 
-2. Replace `http://localhost:8000/api` with your actual backend API URL.
+5. Start the server:
+```bash
+npm run dev
+```
 
-Alternatively, you can modify the `API_BASE_URL` in `src/services/api.js`.
-
-## Running the Application
-
-Start the development server:
+Or:
 ```bash
 npm start
 ```
 
-The application will open at `http://localhost:3000`
-
-## Backend Connection
-
-This frontend expects a REST API backend with the following endpoints:
-
-### Base URL
-The default base URL is `http://localhost:8000/api` (configurable via environment variable)
-
-### Required Endpoints
-
-1. **GET /students** - Get all students
-   - Response: Array of student objects
-   ```json
-   [
-     {
-       "id": 1,
-       "fullName": "John Doe",
-       "course": "Computer Science",
-       "idNumber": "2024-001",
-       "department": "IT",
-       "currentUnits": 18
-     }
-   ]
-   ```
-
-2. **GET /students/:id** - Get a single student
-   - Response: Student object
-
-3. **POST /students** - Create a new student
-   - Request Body:
-   ```json
-   {
-     "fullName": "John Doe",
-     "course": "Computer Science",
-     "idNumber": "2024-001",
-     "department": "IT",
-     "currentUnits": 18
-   }
-   ```
-   - Response: Created student object with ID
-
-4. **PUT /students/:id** - Update a student
-   - Request Body: Same as POST
-   - Response: Updated student object
-
-5. **DELETE /students/:id** - Delete a student
-   - Response: Success message or deleted student object
-
-### Student Data Model
-
-```typescript
-interface Student {
-  id: number | string;
-  fullName: string;
-  course: string;
-  idNumber: string;
-  department: string;
-  currentUnits: number;
-}
+6. Open your browser and navigate to:
 ```
+http://localhost:3000
+```
+
+## Database Setup
+
+The database will be automatically created when you start the server. Make sure MySQL is running.
+
+Alternatively, you can manually run:
+```bash
+mysql -u root -p < backend/database.sql
+```
+
+## API Endpoints
+
+### Calculate BMI
+- **POST** `/api/bmi/calculate`
+- **Body**: `{ name, age, gender, height, weight }`
+- **Response**: `{ success, bmi, category, recordId }`
+
+### Get All BMI Records
+- **GET** `/api/bmi/records`
+- **Response**: `{ success, records: [...] }`
+
+### Get BMI History by Name
+- **GET** `/api/bmi/history/:name`
+- **Response**: `{ success, records: [...] }`
+
+## Usage
+
+1. Enter your information (name, age, gender)
+2. Enter height and weight
+3. Click "CALCULATE" to see your BMI
+4. Click "💾 Save to History" to save the record
+5. Click "📋 View History" to see all your saved records
+
+## BMI Categories
+
+- **Underweight**: BMI < 18.5
+- **Normal**: BMI 18.5 - 24.9
+- **Overweight**: BMI 25 - 29.9
+- **Obese**: BMI ≥ 30
 
 ## Project Structure
 
 ```
-src/
-  ├── components/
-  │   ├── StudentList.js      # Component for displaying students
-  │   ├── StudentList.css
-  │   ├── StudentForm.js       # Form for adding/editing students
-  │   └── StudentForm.css
-  ├── services/
-  │   └── api.js              # API service layer
-  ├── App.js                  # Main application component
-  ├── App.css
-  ├── index.js               # Entry point
-  └── index.css
+Verbo_API/
+├── backend/
+│   ├── database.js          # Database connection and queries
+│   ├── database.sql         # SQL schema file
+│   ├── server.js            # Express server and API routes
+│   ├── package.json         # Dependencies
+│   └── public/              # Frontend files
+│       ├── index.html       # Main HTML file
+│       ├── style.css        # Styling
+│       └── script.js         # JavaScript functionality
+└── README.md                # This file
 ```
-
-## Building for Production
-
-To create a production build:
-
-```bash
-npm run build
-```
-
-The build folder will contain the optimized production build.
-
-## Technologies Used
-
-- React 18
-- Axios (for API calls)
-- CSS3 (for styling)
-
-## Troubleshooting
-
-### Backend Connection Issues
-
-If you see "Failed to fetch students" errors:
-
-1. Verify your backend is running
-2. Check the API URL in `.env` or `src/services/api.js`
-3. Ensure CORS is enabled on your backend
-4. Check browser console for detailed error messages
-
-### CORS Issues
-
-If you encounter CORS errors, make sure your backend allows requests from `http://localhost:3000`. You may need to configure CORS headers on your backend.
 
 ## License
 
-This project is open source and available for use.
+This project is open source and available for educational purposes.
+
+## Author
+
+Karl Christian Verbo
