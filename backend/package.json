@@ -1,0 +1,16 @@
+{
+  "name": "express-app",
+  "version": "1.0.0",
+  "description": "Simple Express server",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"No tests specified\" && exit 0",
+    "dev": "nodemon server.js",
+    "setup-db": "node setup_database.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.6",
+    "express": "^5.2.1",
+    "mysql2": "^3.16.3"
+  }
+}
